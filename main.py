@@ -72,4 +72,32 @@ date_entry.place(x=550, y=150)
 
 Date.set(d1)
 
+# student details
+obj = Label(root, text="Student Details", bg=framebg, fg=framefg, font="arial 20", width=900, bd=2, height=250, relief=GROOVE)
+obj.place(x=30, y=200)
+
+Label(obj, text="Name:", bg=framebg, fg=framefg, font="arial 13").place(x=30, y=50)
+Label(obj, text="Date of Birth:", bg=framebg, fg=framefg, font="arial 13").place(x=30, y=100)
+Label(obj, text="Gender:", bg=framebg, fg=framefg, font="arial 13").place(x=30, y=150)
+
+Label(obj, text="Class:", bg=framebg, fg=framefg, font="arial 13").place(x=500, y=50)
+Label(obj, text="Religion:", bg=framebg, fg=framefg, font="arial 13").place(x=500, y=100)
+Label(obj, text="Skills:", bg=framebg, fg=framefg, font="arial 13").place(x=500, y=150)
+
+Name = StringVar()
+name_entry = Entry(obj, textvariable=Name, width=20, font="arial 10")
+name_entry.place(x=160, y=50)
+
+radio = IntVar()
+R1 = Radiobutton(obj, text="Male", variable=radio, value=1, bg=framebg, fg=framefg, command=selection)
+R1.place(x=150, y=150)
+R2 = Radiobutton(obj, text="Female", variable=radio, value=2, bg=framebg, fg=framefg, command=selection)
+R2.place(x=200, y=150)
+
+
+
+
+
+
+
 root.mainloop()
