@@ -145,6 +145,14 @@ Mother_Occupation = StringVar()
 MO_entry = Entry(obj2, textvariable=Mother_Occupation, width=20, font="arial 10")
 MO_entry.place(x=630, y=100)
 
+# image
+f = Frame(root, bd=3, bg="black", width=200, height=200, relief=GROOVE)
+f.place(x=1000, y=150)
+
+img = PhotoImage(file="images/upload photo.png")
+img_label = Label(f, image=img, bg="black")
+img_label.pack()
+
 
 
 root.mainloop()
