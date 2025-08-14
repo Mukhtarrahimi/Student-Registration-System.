@@ -8,3 +8,5 @@ import os
 import openpyxl, xlrd
 from openpyxl import Workbook
 import pathlib
+
+background = "#06283d"
