@@ -44,10 +44,8 @@ def selection():
     value = radio.get()
     if value == 1:
         gender = "Male"
-        print(gender)
     elif value == 2:
         gender = "Female"
-        print(gender)
 
 
 # top frames
@@ -99,11 +97,30 @@ Name = StringVar()
 name_entry = Entry(obj, textvariable=Name, width=20, font="arial 10")
 name_entry.place(x=160, y=50)
 
+DOB = StringVar()
+dob_entry = Entry(obj, textvariable=DOB, width=20, font="arial 10")
+dob_entry.place(x=160, y=100)
+
 radio = IntVar()
 R1 = Radiobutton(obj, text="Male", variable=radio, value=1, bg=framebg, fg=framefg, command=selection)
 R1.place(x=150, y=150)
 R2 = Radiobutton(obj, text="Female", variable=radio, value=2, bg=framebg, fg=framefg, command=selection)
 R2.place(x=200, y=150)
+
+Religion = StringVar()
+religion_entry = Entry(obj, textvariable=Religion, width=20, font="arial 10")
+religion_entry.place(x=630, y=100)
+
+Skills = StringVar()
+skills_entry = Entry(obj, textvariable=Skills, width=20, font="arial 10")
+skills_entry.place(x=630, y=150)
+
+Class = Combobox(obj, values=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
+Class.place(x=630, y=50)
+Class.set("Select Class")
+
+
+
 
 
 root.mainloop()
