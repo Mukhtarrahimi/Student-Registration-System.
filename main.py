@@ -119,7 +119,31 @@ Class = Combobox(obj, values=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
 Class.place(x=630, y=50)
 Class.set("Select Class")
 
+# parents details
+obj2 = Label(root, text="Parents Details", bg=framebg, fg=framefg, font="arial 20", width=900, bd=2, height=220, relief=GROOVE)
+obj2.place(x=30, y=470)
 
+Label(obj2, text="Father's Name:", bg=framebg, fg=framefg, font="arial 13").place(x=30, y=50)
+Label(obj2, text="Occupation:", font="arial 13", bg=framebg, fg=framefg).place(x=30, y=100)
+
+Father_Name = StringVar()
+FN_entry = Entry(obj2, textvariable=Father_Name, width=20, font="arial 10")
+FN_entry.place(x=160, y=50)
+
+Father_Occupation = StringVar()
+FO_entry = Entry(obj2, textvariable=Father_Occupation, width=20, font="arial 10")
+FO_entry.place(x=160, y=100)
+
+Label(obj2, text="Mother's Name:", bg=framebg, fg=framefg, font="arial 13").place(x=500, y=50)
+Label(obj2, text="Occupation:", font="arial 13", bg=framebg, fg=framefg).place(x=500, y=100)
+
+Mother_Name = StringVar()
+MN_entry = Entry(obj2, textvariable=Mother_Name, width=20, font="arial 10")
+MN_entry.place(x=630, y=50)
+
+Mother_Occupation = StringVar()
+MO_entry = Entry(obj2, textvariable=Mother_Occupation, width=20, font="arial 10")
+MO_entry.place(x=630, y=100)
 
 
 
