@@ -43,5 +43,11 @@ else:
 Label(root, text= "Email: Mukhtarrahimi110@gmail.com", width=10, height=3, bg="#f0687c", anchor='e').pack(side=TOP, fill=X)
 Label(root, text= "STUDENT REGISTRATION", width=10, height=2, bg="#c36464",fg="#ffffff", font="arial 20 bold").pack(side=TOP, fill=X)
 
+# search box to update
+search = StringVar()
+Entry(root, textvariable=search, width=15,bd = 2, font="arial 20").place(x=820, y=70)
+imageicon = PhotoImage(file="images/search.png")
+srch = Button(root, text="Search", compound=LEFT, image=imageicon, width=123, bg="#68ddfa", font="arial 13 bold")
+srch.place(x=1060, y=66)
 
 root.mainloop()
