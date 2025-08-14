@@ -70,8 +70,8 @@ update_button = Button(root, image=imageicon1, bg="#c36464")
 update_button.place(x=110, y=64)
 
 # Registration and date
-Label(root, text="Registration No:", bg=framebg, fg=framefg, font="arial 13").place(x=30, y=150)
-Label(root, text="ِDate:", bg=framebg, fg=framefg, font="arial 13").place(x=500, y=150)
+Label(root, text="Registration No:", bg=framebg, fg=framefg, font="arial 12").place(x=30, y=150)
+Label(root, text="Date:", bg=framebg, fg=framefg, font="arial 12").place(x=500, y=150)
 
 Registration = StringVar()
 Date = StringVar()
