@@ -10,11 +10,14 @@ from openpyxl import Workbook
 import pathlib
 
 background = "#06283d"
+framebg = "#ededed"
+framefg = "#06283d"
+
 
 root = Tk()
 root.title("Student Registration System")
 root.geometry("1250x700+210+100")
-root.config()
+root.config(bg=background)
 
 
 root.mainloop()
