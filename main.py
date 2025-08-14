@@ -39,6 +39,17 @@ else:
     
     file.save("student_data.xlsx")
 
+# gender
+def selection():
+    value = radio.get()
+    if value == 1:
+        gender = "Male"
+        print(gender)
+    elif value == 2:
+        gender = "Female"
+        print(gender)
+
+
 # top frames
 Label(root, text= "Email: Mukhtarrahimi110@gmail.com", width=10, height=3, bg="#f0687c", anchor='e').pack(side=TOP, fill=X)
 Label(root, text= "STUDENT REGISTRATION", width=10, height=2, bg="#c36464",fg="#ffffff", font="arial 20 bold").pack(side=TOP, fill=X)
@@ -93,11 +104,6 @@ R1 = Radiobutton(obj, text="Male", variable=radio, value=1, bg=framebg, fg=frame
 R1.place(x=150, y=150)
 R2 = Radiobutton(obj, text="Female", variable=radio, value=2, bg=framebg, fg=framefg, command=selection)
 R2.place(x=200, y=150)
-
-
-
-
-
 
 
 root.mainloop()
