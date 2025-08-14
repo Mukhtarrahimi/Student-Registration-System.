@@ -47,7 +47,13 @@ def selection():
     elif value == 2:
         gender = "Female"
 
+# Exit
+def Exit():
+    root.destroy()
 
+# show img
+def show_image():
+    pass
 # top frames
 Label(root, text= "Email: Mukhtarrahimi110@gmail.com", width=10, height=3, bg="#f0687c", anchor='e').pack(side=TOP, fill=X)
 Label(root, text= "STUDENT REGISTRATION", width=10, height=2, bg="#c36464",fg="#ffffff", font="arial 20 bold").pack(side=TOP, fill=X)
@@ -153,6 +159,18 @@ img = PhotoImage(file="images/upload photo.png")
 img_label = Label(f, image=img, bg="black")
 img_label.pack()
 
+# button
+Button(root, text="Upload", bg="lightblue", font="arial 12 bold", width=19, height=2, command=show_image).place(x=1000, y=370)
 
+save_button = Button(root, text="Save", bg="#68ddfa", font="arial 12 bold", width=19, height=2)
+save_button.place(x=1000, y=450)
+
+Button(
+    root, text="Reset", bg="lightpink", font="arial 12 bold", width=19, height=2
+).place(x=1000, y=530)
+
+Button(
+    root, text="Exit", bg="lightpink", font="arial 12 bold", width=19, height=2, command=Exit
+).place(x=1000, y=610)
 
 root.mainloop()
