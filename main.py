@@ -50,4 +50,13 @@ imageicon = PhotoImage(file="images/search.png")
 srch = Button(root, text="Search", compound=LEFT, image=imageicon, width=123, bg="#68ddfa", font="arial 13 bold")
 srch.place(x=1060, y=66)
 
+imageicon1 = PhotoImage(file="images/Layer 4.png")
+update_button = Button(root, image=imageicon1, bg="#c36464")
+update_button.place(x=110, y=64)
+
+
+
+
+
+
 root.mainloop()
