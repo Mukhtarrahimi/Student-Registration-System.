@@ -7,15 +7,14 @@ import os
 import openpyxl
 from openpyxl import Workbook
 import pathlib
+import shutil
 
-# COLORS
-bg_main = "#f4f6f8"  
-frame_bg = "#ffffff"  
-frame_fg = "#344955"  
-btn_primary = "#4a90e2"  
-btn_secondary = "#f76c6c"  
+bg_main = "#f4f6f8"
+frame_bg = "#ffffff"
+frame_fg = "#344955"
+btn_primary = "#4a90e2"
+btn_secondary = "#f76c6c"
 
-# CREATE EXCEL FILE
 file = pathlib.Path("student_data.xlsx")
 if not file.exists():
     wb = Workbook()
@@ -33,22 +32,32 @@ if not file.exists():
         "Mother Name",
         "Father's Occupation",
         "Mother's Occupation",
+        "Photo",
     ]
     for col, header in enumerate(headers, start=1):
         sheet.cell(row=1, column=col, value=header)
     wb.save("student_data.xlsx")
 
+photos_dir = "photos"
+if not os.path.exists(photos_dir):
+    os.makedirs(photos_dir)
 
-# FUNCTIONS
+photo_path = None
+
+
+# selection
 def selection():
     return "Male" if radio.get() == 1 else "Female"
 
 
+# Exit
 def Exit():
     root.destroy()
 
 
+# show_image
 def show_image():
+    global photo_path
     file_path = filedialog.askopenfilename(
         title="Select Image", filetypes=[("Image Files", "*.jpg *.png *.jpeg")]
     )
@@ -58,15 +67,17 @@ def show_image():
         img_tk = ImageTk.PhotoImage(img_open)
         img_label.config(image=img_tk)
         img_label.image = img_tk
+        file_name = os.path.basename(file_path)
+        save_path = os.path.join(photos_dir, file_name)
+        shutil.copy(file_path, save_path)
+        photo_path = save_path
 
 
-# MAIN WINDOW
 root = Tk()
 root.title("Student Registration System")
 root.geometry("1000x600+250+120")
 root.config(bg=bg_main)
 
-# TOP OF WINDOW
 Label(
     root,
     text="Email: Mukhtarrahimi110@gmail.com",
@@ -83,7 +94,6 @@ Label(
     font=("Arial", 18, "bold"),
 ).pack(side=TOP, fill=X)
 
-# SEARCH
 search = StringVar()
 Entry(root, textvariable=search, width=18, bd=2, font=("Arial", 14)).place(x=650, y=60)
 srch = Button(
@@ -96,7 +106,6 @@ update_button = Button(
 )
 update_button.place(x=100, y=57)
 
-# SIGN IN & DATE
 Label(root, text="Registration No:", bg=bg_main, fg=frame_fg, font=("Arial", 11)).place(
     x=30, y=120
 )
@@ -112,7 +121,6 @@ today = date.today()
 Date.set(today.strftime("%d/%m/%Y"))
 Entry(root, textvariable=Date, width=15, font=("Arial", 10)).place(x=450, y=120)
 
-# STUDENT DETAILS
 obj = LabelFrame(
     root,
     text="Student Details",
@@ -178,7 +186,6 @@ Entry(obj, textvariable=Religion, width=18, font=("Arial", 10)).place(x=500, y=7
 Skills = StringVar()
 Entry(obj, textvariable=Skills, width=18, font=("Arial", 10)).place(x=500, y=110)
 
-# PARENTS DETAILS
 obj2 = LabelFrame(
     root,
     text="Parents Details",
@@ -219,14 +226,12 @@ Entry(obj2, textvariable=Mother_Occupation, width=18, font=("Arial", 10)).place(
     x=520, y=70
 )
 
-# IMAGES
 f = Frame(root, bd=2, bg="black", width=150, height=150)
 f.place(x=800, y=160)
 
 img_label = Label(f, bg="black")
 img_label.pack()
 
-# BUTTONS
 Button(
     root,
     text="Upload Photo",
