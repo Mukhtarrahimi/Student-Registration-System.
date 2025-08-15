@@ -355,6 +355,8 @@ Entry(obj2, textvariable=Mother_Occupation, width=18, font=("Arial", 10)).place(
     x=520, y=70
 )
 
+
+
 f = Frame(root, bd=2, bg="black", width=150, height=150)
 f.place(x=800, y=160)
 img_label = Label(f, bg="black")
