@@ -73,6 +73,65 @@ def show_image():
         photo_path = save_path
 
 
+# save_student
+def save_student():
+    global photo_path
+    reg_no = Registration.get()
+    name = Name.get()
+    student_class = Class.get()
+    gender = selection()
+    dob = DOB.get()
+    reg_date = Date.get()
+    religion = Religion.get()
+    skill = Skills.get()
+    father = Father_Name.get()
+    mother = Mother_Name.get()
+    father_occ = Father_Occupation.get()
+    mother_occ = Mother_Occupation.get()
+
+    if not all(
+        [
+            reg_no,
+            name,
+            student_class,
+            gender,
+            dob,
+            reg_date,
+            religion,
+            skill,
+            father,
+            mother,
+            father_occ,
+            mother_occ,
+            photo_path,
+        ]
+    ):
+        messagebox.showerror("Error", "Please fill all fields and upload a photo.")
+        return
+
+    wb = openpyxl.load_workbook("student_data.xlsx")
+    sheet = wb.active
+    sheet.append(
+        [
+            reg_no,
+            name,
+            student_class,
+            gender,
+            dob,
+            reg_date,
+            religion,
+            skill,
+            father,
+            mother,
+            father_occ,
+            mother_occ,
+            photo_path,
+        ]
+    )
+    wb.save("student_data.xlsx")
+    messagebox.showinfo("Success", "Student data saved successfully.")
+
+
 root = Tk()
 root.title("Student Registration System")
 root.geometry("1000x600+250+120")
@@ -243,7 +302,13 @@ Button(
 ).place(x=800, y=320)
 
 Button(
-    root, text="Save", bg=btn_primary, fg="white", font=("Arial", 11, "bold"), width=15
+    root,
+    text="Save",
+    bg=btn_primary,
+    fg="white",
+    font=("Arial", 11, "bold"),
+    width=15,
+    command=save_student,
 ).place(x=800, y=370)
 Button(
     root, text="Reset", bg="#ffa534", fg="white", font=("Arial", 11, "bold"), width=15
