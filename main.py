@@ -152,6 +152,55 @@ def reset_form():
     Date.set(date.today().strftime("%d/%m/%Y"))
 
 
+# search_student
+def search_student():
+    global photo_path
+    reg_no_search = search.get().strip()
+
+    if not reg_no_search:
+        messagebox.showerror("Error", "Please enter a registration number to search.")
+        return
+
+    wb = openpyxl.load_workbook("student_data.xlsx")
+    sheet = wb.active
+    found = False
+
+    for row in sheet.iter_rows(min_row=2, values_only=True):
+        if str(row[0]) == reg_no_search:
+            found = True
+            Registration.set(row[0])
+            Name.set(row[1])
+            Class.set(row[2])
+            radio.set(1 if row[3] == "Male" else 2)
+            DOB.set(row[4])
+            Date.set(row[5])
+            Religion.set(row[6])
+            Skills.set(row[7])
+            Father_Name.set(row[8])
+            Mother_Name.set(row[9])
+            Father_Occupation.set(row[10])
+            Mother_Occupation.set(row[11])
+            photo_path = row[12]
+
+            if os.path.exists(photo_path):
+                img_open = Image.open(photo_path)
+                img_open = img_open.resize((150, 150))
+                img_tk = ImageTk.PhotoImage(img_open)
+                img_label.config(image=img_tk)
+                img_label.image = img_tk
+            else:
+                img_label.config(image="", text="No Photo", bg="black")
+                img_label.image = None
+            break
+
+    wb.close()
+
+    if not found:
+        messagebox.showinfo(
+            "Not Found", "No student found with this registration number."
+        )
+
+
 root = Tk()
 root.title("Student Registration System")
 root.geometry("1000x600+250+120")
@@ -175,8 +224,14 @@ Label(
 
 search = StringVar()
 Entry(root, textvariable=search, width=18, bd=2, font=("Arial", 14)).place(x=650, y=60)
+
 srch = Button(
-    root, text="Search", bg=btn_primary, fg="white", font=("Arial", 12, "bold")
+    root,
+    text="Search",
+    bg=btn_primary,
+    fg="white",
+    font=("Arial", 12, "bold"),
+    command=search_student,
 )
 srch.place(x=850, y=57)
 
@@ -218,7 +273,6 @@ Label(obj, text="Date of Birth:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).
 Label(obj, text="Gender:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
     x=20, y=110
 )
-
 Label(obj, text="Class:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
     x=400, y=30
 )
@@ -231,7 +285,6 @@ Label(obj, text="Skills:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
 
 Name = StringVar()
 Entry(obj, textvariable=Name, width=18, font=("Arial", 10)).place(x=120, y=30)
-
 DOB = StringVar()
 Entry(obj, textvariable=DOB, width=18, font=("Arial", 10)).place(x=120, y=70)
 
@@ -291,15 +344,12 @@ Label(obj2, text="Occupation:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).pl
 
 Father_Name = StringVar()
 Entry(obj2, textvariable=Father_Name, width=18, font=("Arial", 10)).place(x=140, y=30)
-
 Father_Occupation = StringVar()
 Entry(obj2, textvariable=Father_Occupation, width=18, font=("Arial", 10)).place(
     x=140, y=70
 )
-
 Mother_Name = StringVar()
 Entry(obj2, textvariable=Mother_Name, width=18, font=("Arial", 10)).place(x=520, y=30)
-
 Mother_Occupation = StringVar()
 Entry(obj2, textvariable=Mother_Occupation, width=18, font=("Arial", 10)).place(
     x=520, y=70
@@ -307,7 +357,6 @@ Entry(obj2, textvariable=Mother_Occupation, width=18, font=("Arial", 10)).place(
 
 f = Frame(root, bd=2, bg="black", width=150, height=150)
 f.place(x=800, y=160)
-
 img_label = Label(f, bg="black")
 img_label.pack()
 
@@ -320,7 +369,6 @@ Button(
     width=15,
     command=show_image,
 ).place(x=800, y=320)
-
 Button(
     root,
     text="Save",
