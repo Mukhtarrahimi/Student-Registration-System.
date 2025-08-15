@@ -132,6 +132,26 @@ def save_student():
     messagebox.showinfo("Success", "Student data saved successfully.")
 
 
+# reset_form
+def reset_form():
+    global photo_path
+    Registration.set("")
+    Name.set("")
+    DOB.set("")
+    radio.set(0)
+    Class.set("Select Class")
+    Religion.set("")
+    Skills.set("")
+    Father_Name.set("")
+    Father_Occupation.set("")
+    Mother_Name.set("")
+    Mother_Occupation.set("")
+    img_label.config(image="", text="", bg="black")
+    img_label.image = None
+    photo_path = None
+    Date.set(date.today().strftime("%d/%m/%Y"))
+
+
 root = Tk()
 root.title("Student Registration System")
 root.geometry("1000x600+250+120")
@@ -311,7 +331,13 @@ Button(
     command=save_student,
 ).place(x=800, y=370)
 Button(
-    root, text="Reset", bg="#ffa534", fg="white", font=("Arial", 11, "bold"), width=15
+    root,
+    text="Reset",
+    bg="#ffa534",
+    fg="white",
+    font=("Arial", 11, "bold"),
+    width=15,
+    command=reset_form,
 ).place(x=800, y=420)
 Button(
     root,
