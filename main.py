@@ -1,176 +1,256 @@
 from tkinter import *
 from datetime import date
-from tkinter import filedialog
-from tkinter import messagebox
+from tkinter import filedialog, messagebox
 from tkinter.ttk import Combobox
 from PIL import Image, ImageTk
 import os
-import openpyxl, xlrd
+import openpyxl
 from openpyxl import Workbook
 import pathlib
 
-background = "#06283d"
-framebg = "#ededed"
-framefg = "#06283d"
+# COLORS
+bg_main = "#f4f6f8"  
+frame_bg = "#ffffff"  
+frame_fg = "#344955"  
+btn_primary = "#4a90e2"  
+btn_secondary = "#f76c6c"  
 
-root = Tk()
-root.title("Student Registration System")
-root.geometry("1250x700+210+100")
-root.config(bg=background)
-
+# CREATE EXCEL FILE
 file = pathlib.Path("student_data.xlsx")
-if file.exists():
-    pass
-else:
-    file = Workbook()
-    sheet = file.active
-    sheet['A1']="Registration No."
-    sheet['B1']="Name"
-    sheet['C1']="Class"
-    sheet['D1']="Gender"
-    sheet['E1']="DOB"
-    sheet['F1']="Date Of Registration"
-    sheet['G1']="Religion"
-    sheet['H1']="Skill"
-    sheet['I1']="Father Name"
-    sheet['J1']="Mother Name"
-    sheet['K1']="Father's Occupation"
-    sheet['L1']="Mother's Occupation"
-    
-    file.save("student_data.xlsx")
+if not file.exists():
+    wb = Workbook()
+    sheet = wb.active
+    headers = [
+        "Registration No.",
+        "Name",
+        "Class",
+        "Gender",
+        "DOB",
+        "Date Of Registration",
+        "Religion",
+        "Skill",
+        "Father Name",
+        "Mother Name",
+        "Father's Occupation",
+        "Mother's Occupation",
+    ]
+    for col, header in enumerate(headers, start=1):
+        sheet.cell(row=1, column=col, value=header)
+    wb.save("student_data.xlsx")
 
-# gender
+
+# FUNCTIONS
 def selection():
-    value = radio.get()
-    if value == 1:
-        gender = "Male"
-    elif value == 2:
-        gender = "Female"
+    return "Male" if radio.get() == 1 else "Female"
 
-# Exit
+
 def Exit():
     root.destroy()
 
-# show img
+
 def show_image():
-    pass
-# top frames
-Label(root, text= "Email: Mukhtarrahimi110@gmail.com", width=10, height=3, bg="#f0687c", anchor='e').pack(side=TOP, fill=X)
-Label(root, text= "STUDENT REGISTRATION", width=10, height=2, bg="#c36464",fg="#ffffff", font="arial 20 bold").pack(side=TOP, fill=X)
+    file_path = filedialog.askopenfilename(
+        title="Select Image", filetypes=[("Image Files", "*.jpg *.png *.jpeg")]
+    )
+    if file_path:
+        img_open = Image.open(file_path)
+        img_open = img_open.resize((150, 150))
+        img_tk = ImageTk.PhotoImage(img_open)
+        img_label.config(image=img_tk)
+        img_label.image = img_tk
 
-# search box to update
+
+# MAIN WINDOW
+root = Tk()
+root.title("Student Registration System")
+root.geometry("1000x600+250+120")
+root.config(bg=bg_main)
+
+# TOP OF WINDOW
+Label(
+    root,
+    text="Email: Mukhtarrahimi110@gmail.com",
+    bg=btn_secondary,
+    fg="white",
+    font=("Arial", 10),
+    anchor="e",
+).pack(side=TOP, fill=X)
+Label(
+    root,
+    text="STUDENT REGISTRATION",
+    bg=frame_fg,
+    fg="white",
+    font=("Arial", 18, "bold"),
+).pack(side=TOP, fill=X)
+
+# SEARCH
 search = StringVar()
-Entry(root, textvariable=search, width=15,bd = 2, font="arial 20").place(x=820, y=70)
-imageicon = PhotoImage(file="images/search.png")
-srch = Button(root, text="Search", compound=LEFT, image=imageicon, width=123, bg="#68ddfa", font="arial 13 bold")
-srch.place(x=1060, y=66)
+Entry(root, textvariable=search, width=18, bd=2, font=("Arial", 14)).place(x=650, y=60)
+srch = Button(
+    root, text="Search", bg=btn_primary, fg="white", font=("Arial", 12, "bold")
+)
+srch.place(x=850, y=57)
 
-imageicon1 = PhotoImage(file="images/Layer 4.png")
-update_button = Button(root, image=imageicon1, bg="#c36464")
-update_button.place(x=110, y=64)
+update_button = Button(
+    root, text="Update", bg=btn_secondary, fg="white", font=("Arial", 12, "bold")
+)
+update_button.place(x=100, y=57)
 
-# Registration and date
-Label(root, text="Registration No:", bg=framebg, fg=framefg, font="arial 12").place(x=30, y=150)
-Label(root, text="Date:", bg=framebg, fg=framefg, font="arial 12").place(x=500, y=150)
+# SIGN IN & DATE
+Label(root, text="Registration No:", bg=bg_main, fg=frame_fg, font=("Arial", 11)).place(
+    x=30, y=120
+)
+Label(root, text="Date:", bg=bg_main, fg=frame_fg, font=("Arial", 11)).place(
+    x=400, y=120
+)
 
 Registration = StringVar()
 Date = StringVar()
+Entry(root, textvariable=Registration, width=15, font=("Arial", 10)).place(x=150, y=120)
 
-reg_entry = Entry(root, textvariable = Registration, width=15, font="arial 10")
-reg_entry.place(x=160, y=150)
-
-# registration no()
 today = date.today()
-d1 = today.strftime("%d/%m/%Y")
-date_entry = Entry(root, textvariable = Date, width=15, font="arial 10")
-date_entry.place(x=550, y=150)
+Date.set(today.strftime("%d/%m/%Y"))
+Entry(root, textvariable=Date, width=15, font=("Arial", 10)).place(x=450, y=120)
 
-Date.set(d1)
+# STUDENT DETAILS
+obj = LabelFrame(
+    root,
+    text="Student Details",
+    bg=frame_bg,
+    fg=frame_fg,
+    font=("Arial", 14, "bold"),
+    width=940,
+    height=200,
+)
+obj.place(x=30, y=160)
 
-# student details
-obj = Label(root, text="Student Details", bg=framebg, fg=framefg, font="arial 20", width=900, bd=2, height=250, relief=GROOVE)
-obj.place(x=30, y=200)
+Label(obj, text="Name:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(x=20, y=30)
+Label(obj, text="Date of Birth:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
+    x=20, y=70
+)
+Label(obj, text="Gender:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
+    x=20, y=110
+)
 
-Label(obj, text="Name:", bg=framebg, fg=framefg, font="arial 13").place(x=30, y=50)
-Label(obj, text="Date of Birth:", bg=framebg, fg=framefg, font="arial 13").place(x=30, y=100)
-Label(obj, text="Gender:", bg=framebg, fg=framefg, font="arial 13").place(x=30, y=150)
-
-Label(obj, text="Class:", bg=framebg, fg=framefg, font="arial 13").place(x=500, y=50)
-Label(obj, text="Religion:", bg=framebg, fg=framefg, font="arial 13").place(x=500, y=100)
-Label(obj, text="Skills:", bg=framebg, fg=framefg, font="arial 13").place(x=500, y=150)
+Label(obj, text="Class:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
+    x=400, y=30
+)
+Label(obj, text="Religion:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
+    x=400, y=70
+)
+Label(obj, text="Skills:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
+    x=400, y=110
+)
 
 Name = StringVar()
-name_entry = Entry(obj, textvariable=Name, width=20, font="arial 10")
-name_entry.place(x=160, y=50)
+Entry(obj, textvariable=Name, width=18, font=("Arial", 10)).place(x=120, y=30)
 
 DOB = StringVar()
-dob_entry = Entry(obj, textvariable=DOB, width=20, font="arial 10")
-dob_entry.place(x=160, y=100)
+Entry(obj, textvariable=DOB, width=18, font=("Arial", 10)).place(x=120, y=70)
 
 radio = IntVar()
-R1 = Radiobutton(obj, text="Male", variable=radio, value=1, bg=framebg, fg=framefg, command=selection)
-R1.place(x=150, y=150)
-R2 = Radiobutton(obj, text="Female", variable=radio, value=2, bg=framebg, fg=framefg, command=selection)
-R2.place(x=200, y=150)
+Radiobutton(
+    obj,
+    text="Male",
+    variable=radio,
+    value=1,
+    bg=frame_bg,
+    fg=frame_fg,
+    command=selection,
+).place(x=120, y=110)
+Radiobutton(
+    obj,
+    text="Female",
+    variable=radio,
+    value=2,
+    bg=frame_bg,
+    fg=frame_fg,
+    command=selection,
+).place(x=180, y=110)
 
-Religion = StringVar()
-religion_entry = Entry(obj, textvariable=Religion, width=20, font="arial 10")
-religion_entry.place(x=630, y=100)
-
-Skills = StringVar()
-skills_entry = Entry(obj, textvariable=Skills, width=20, font="arial 10")
-skills_entry.place(x=630, y=150)
-
-Class = Combobox(obj, values=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
-Class.place(x=630, y=50)
+Class = Combobox(obj, values=[str(i) for i in range(1, 13)], width=15)
+Class.place(x=500, y=30)
 Class.set("Select Class")
 
-# parents details
-obj2 = Label(root, text="Parents Details", bg=framebg, fg=framefg, font="arial 20", width=900, bd=2, height=220, relief=GROOVE)
-obj2.place(x=30, y=470)
+Religion = StringVar()
+Entry(obj, textvariable=Religion, width=18, font=("Arial", 10)).place(x=500, y=70)
 
-Label(obj2, text="Father's Name:", bg=framebg, fg=framefg, font="arial 13").place(x=30, y=50)
-Label(obj2, text="Occupation:", font="arial 13", bg=framebg, fg=framefg).place(x=30, y=100)
+Skills = StringVar()
+Entry(obj, textvariable=Skills, width=18, font=("Arial", 10)).place(x=500, y=110)
+
+# PARENTS DETAILS
+obj2 = LabelFrame(
+    root,
+    text="Parents Details",
+    bg=frame_bg,
+    fg=frame_fg,
+    font=("Arial", 14, "bold"),
+    width=940,
+    height=150,
+)
+obj2.place(x=30, y=370)
+
+Label(obj2, text="Father's Name:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
+    x=20, y=30
+)
+Label(obj2, text="Occupation:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
+    x=20, y=70
+)
+Label(obj2, text="Mother's Name:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
+    x=400, y=30
+)
+Label(obj2, text="Occupation:", bg=frame_bg, fg=frame_fg, font=("Arial", 11)).place(
+    x=400, y=70
+)
 
 Father_Name = StringVar()
-FN_entry = Entry(obj2, textvariable=Father_Name, width=20, font="arial 10")
-FN_entry.place(x=160, y=50)
+Entry(obj2, textvariable=Father_Name, width=18, font=("Arial", 10)).place(x=140, y=30)
 
 Father_Occupation = StringVar()
-FO_entry = Entry(obj2, textvariable=Father_Occupation, width=20, font="arial 10")
-FO_entry.place(x=160, y=100)
-
-Label(obj2, text="Mother's Name:", bg=framebg, fg=framefg, font="arial 13").place(x=500, y=50)
-Label(obj2, text="Occupation:", font="arial 13", bg=framebg, fg=framefg).place(x=500, y=100)
+Entry(obj2, textvariable=Father_Occupation, width=18, font=("Arial", 10)).place(
+    x=140, y=70
+)
 
 Mother_Name = StringVar()
-MN_entry = Entry(obj2, textvariable=Mother_Name, width=20, font="arial 10")
-MN_entry.place(x=630, y=50)
+Entry(obj2, textvariable=Mother_Name, width=18, font=("Arial", 10)).place(x=520, y=30)
 
 Mother_Occupation = StringVar()
-MO_entry = Entry(obj2, textvariable=Mother_Occupation, width=20, font="arial 10")
-MO_entry.place(x=630, y=100)
+Entry(obj2, textvariable=Mother_Occupation, width=18, font=("Arial", 10)).place(
+    x=520, y=70
+)
 
-# image
-f = Frame(root, bd=3, bg="black", width=200, height=200, relief=GROOVE)
-f.place(x=1000, y=150)
+# IMAGES
+f = Frame(root, bd=2, bg="black", width=150, height=150)
+f.place(x=800, y=160)
 
-img = PhotoImage(file="images/upload photo.png")
-img_label = Label(f, image=img, bg="black")
+img_label = Label(f, bg="black")
 img_label.pack()
 
-# button
-Button(root, text="Upload", bg="lightblue", font="arial 12 bold", width=19, height=2, command=show_image).place(x=1000, y=370)
-
-save_button = Button(root, text="Save", bg="#68ddfa", font="arial 12 bold", width=19, height=2)
-save_button.place(x=1000, y=450)
+# BUTTONS
+Button(
+    root,
+    text="Upload Photo",
+    bg=btn_primary,
+    fg="white",
+    font=("Arial", 11, "bold"),
+    width=15,
+    command=show_image,
+).place(x=800, y=320)
 
 Button(
-    root, text="Reset", bg="lightpink", font="arial 12 bold", width=19, height=2
-).place(x=1000, y=530)
-
+    root, text="Save", bg=btn_primary, fg="white", font=("Arial", 11, "bold"), width=15
+).place(x=800, y=370)
 Button(
-    root, text="Exit", bg="lightpink", font="arial 12 bold", width=19, height=2, command=Exit
-).place(x=1000, y=610)
+    root, text="Reset", bg="#ffa534", fg="white", font=("Arial", 11, "bold"), width=15
+).place(x=800, y=420)
+Button(
+    root,
+    text="Exit",
+    bg=btn_secondary,
+    fg="white",
+    font=("Arial", 11, "bold"),
+    width=15,
+    command=Exit,
+).place(x=800, y=470)
 
 root.mainloop()
